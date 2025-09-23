@@ -67,19 +67,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== YOUR CHALLENGE: IMPLEMENT THESE FUNCTIONS =====
 
-// TODO: Add keyboard event listener
-// document.addEventListener("keydown", (event) => {
-//     // Your code here!
-// });
+document.addEventListener("keydown", (event) => {
+    letters=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","Q","R","S","T","U","V","W","X","Y","Z"]//list for add letter
+    console.log("A key was pressed:", event.key);
+    guess=event.key.toUpperCase()
+    message="a key was pressed:"+ guess;
 
-// TODO: Implement addLetter function
-// function addLetter(letter) {
-//     // Your code here!
-// }
+    logDebug(message);
+    if(gameOver)//if gameover stop
+    {
+        
+    }
+    else if(guess=="BACKSPACE"){//call delete function
+        deleteLetter();
+    }
+    else if(guess=="ENTER")//call submit guess
+    {
+        submitGuess();
+    }
+    else if (letters.includes(guess)){//call add letter
+            addLetter(guess)
+        }
+    
+        
+    }
+);
+
+function addLetter(letter) {
+    logDebug(`🎯 addLetter("${letter}") called`, 'info');
+    if(currentTile>=5)//See if row is full
+    {
+        logDebug("Row Full" )
+        return
+    }
+    const currentRowElement = rows[currentRow];//get the row
+    const tiles = currentRowElement.querySelectorAll('.tile');//get tiles
+    const tile = tiles[currentTile];//get the tile to modify
+    tile.textContent = letter;//install the letter
+    tile.classList.add('filled');//format as filled
+    currentTile++;//incrememnt tile
+    logDebug(`Letter "${letter}" added at position ${currentTile - 1}`);//log
+    logDebug(`current word: ${getCurrentWord()}`)
+}
+
 
 // TODO: Implement deleteLetter function  
 // function deleteLetter() {
 //     // Your code here!
+
 // }
 
 // TODO: Implement submitGuess function
