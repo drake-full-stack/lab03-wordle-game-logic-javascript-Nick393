@@ -97,7 +97,7 @@ function addLetter(letter) {
     logDebug(`🎯 addLetter("${letter}") called`, 'info');
     if(currentTile>=5)//See if row is full
     {
-        logDebug("Row Full" )
+        logDebug("Row Full-error" )
         return
     }
     const currentRowElement = rows[currentRow];//get the row
@@ -115,18 +115,22 @@ function deleteLetter() {
 // Check if there are letters to delete
     if (currentTile <= 0) {
         // No letters in current row
+        logDebug("Row empty-error" )
         return;
     }
 
     // Move back one position FIRST, then clear that tile
     currentTile--; // This decrements by 1 (same as currentTile = currentTile - 1)
-
+    
     // Now currentTile points to the tile we want to clear
     const currentRowElement = rows[currentRow];
     const tiles = currentRowElement.querySelectorAll('.tile');
     const tileToDelete = tiles[currentTile]; // currentTile now points to the right tile
+    logDebug(`Letter "${tileToDelete.textContent}" deleted at position ${currentTile}`);//log
+    
     tileToDelete.textContent="";//delete the letter
     tileToDelete.classList.remove("filled")//remove the filled border
+    logDebug(`current word: ${getCurrentWord()}`)//log
 }
 
 // TODO: Implement submitGuess function
