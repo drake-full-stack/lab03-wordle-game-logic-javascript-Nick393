@@ -110,12 +110,24 @@ function addLetter(letter) {
     logDebug(`current word: ${getCurrentWord()}`)
 }
 
+function deleteLetter() {
+    logDebug(`🗑️ deleteLetter() called`, 'info');
+// Check if there are letters to delete
+    if (currentTile <= 0) {
+        // No letters in current row
+        return;
+    }
 
-// TODO: Implement deleteLetter function  
-// function deleteLetter() {
-//     // Your code here!
+    // Move back one position FIRST, then clear that tile
+    currentTile--; // This decrements by 1 (same as currentTile = currentTile - 1)
 
-// }
+    // Now currentTile points to the tile we want to clear
+    const currentRowElement = rows[currentRow];
+    const tiles = currentRowElement.querySelectorAll('.tile');
+    const tileToDelete = tiles[currentTile]; // currentTile now points to the right tile
+    tileToDelete.textContent="";//delete the letter
+    tileToDelete.classList.remove("filled")//remove the filled border
+}
 
 // TODO: Implement submitGuess function
 // function submitGuess() {
