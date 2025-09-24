@@ -152,10 +152,7 @@ function submitGuess() {
     });
     logDebug(`Guess: ${guess}, target word: ${TARGET_WORD}`)
     checkGuess(guess,tiles)
-}
-function checkGuess(guess,tiles)
-    {
-        currentRow++;     // move to next row (0→1, 1→2, etc.)
+    currentRow++;     // move to next row (0→1, 1→2, etc.)
         currentTile = 0;  // reset to start of new row
         if (guess === TARGET_WORD) {
             gameOver = true; // player won!
@@ -163,16 +160,50 @@ function checkGuess(guess,tiles)
         } else if (currentRow >= 6) {
         gameOver = true; // player used all 6 rows - game over
         setTimeout(() => alert("You Lose!"), 500);
+}
+}
+function checkGuess(guess, tiles) {
+    logDebug(`🔍 Starting analysis for "${guess}"`, 'info');
+    
+    // TODO: Split TARGET_WORD and guess into arrays
+    const target = TARGET_WORD.split('')
+    const guessArray = guess.split('')
+    const result = ['absent', 'absent', 'absent', 'absent', 'absent'];
+    
+    // STEP 1: Find exact matches
+    for (let i = 0; i < 5; i++) {
+        if (target[i]==guessArray[i]) {
+            result[i] = 'correct';
+            target[i]=null;
+            guessArray[i]=null;
+            // TODO: mark both target[i] and guessArray[i] as used (null)
+        }
     }
     
-    // Now 'guess' contains the full word like "HELLO"
+    // STEP 2: Find wrong position matches  
+    for (let i = 0; i < 5; i++) {
+        if (guessArray[i] !== null) {
+            for (let j = 0; j < 5; j++) {
+                if (target[j] == guessArray[i]) {
+                    //if found, set target to null, word presetn
+                    result[i] = 'present';
+                    target[j] = null;
+                    logDebug(`Position ${i}: wrong position for ${guessArray[i]}`);
+                    break; // Found one match, break
+                }
+            }
+            if (result[i] == 'absent') {
+                logDebug(`Position ${i}: No match for ${guessArray[i]}`);
+            }
+            // only check unused letters
+            // TODO: look for guessArray[i] in remaining target letters
+            // TODO: if found, mark as 'present' and set target position to null
+        }
+    }
     
-
+    // TODO: Apply CSS classes to tiles -- we'll do this in the next step
+    for (let i = 0; i < 5; i++) {
+        tiles[i].classList.add(result[i]);
+    }
+    return result;
 }
-
-// TODO: Implement checkGuess function (the hardest part!)
-// function checkGuess(guess, tiles) {
-//     // Your code here!
-//     // Remember: handle duplicate letters correctly
-//     // Return the result array
-// }
